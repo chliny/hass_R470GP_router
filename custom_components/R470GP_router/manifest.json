@@ -1,0 +1,13 @@
+{
+    "domain": "R470GP_router",
+    "name": "Tplink R470GP router",
+    "config_flow": false,
+    "documentation": "https://github.com/chliny/hass_R470G_router",
+    "issue_tracker": "https://github.com/chliny/hass_R470G_router/issues",
+    "requirements": [],
+    "dependencies": [],
+    "codeowners": [
+        "@chliny"
+    ],
+    "version": "v0.0.1"
+}

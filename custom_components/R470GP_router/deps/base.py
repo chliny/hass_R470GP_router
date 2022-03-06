@@ -1,0 +1,32 @@
+""" wrap class for router requests """
+
+import logging
+from aiohttp import (
+    ClientSession, ClientConnectorError)
+
+from .const import LOGNAME
+
+_LOGGER = logging.getLogger(LOGNAME)
+
+class BaseRouter():
+    """router requests"""
+    def __init__(self, session:ClientSession, host:str):
+        self.session = session
+        self.host = host
+
+    async def _post(self, url:str, data:dict, header:dict[str,str]) -> dict:
+        send_header = {
+            "Host": self.host,
+            "Content-Type": "application/json",
+        }
+        if header:
+            send_header.update(header)
+        try:
+            ret = await self.session.post(url, json=data, headers=header)
+            if not ret.ok:
+                _LOGGER.error("get macs faield %s", ret.text)
+                return {}
+        except ClientConnectorError as err:
+            _LOGGER.error(err)
+            return {}
+        return await ret.json()
