@@ -22,7 +22,7 @@ class BaseRouter():
         try:
             ret = await self.session.post(url, json=data, headers=header)
             if not ret.ok:
-                _LOGGER.error("get macs faield %s", ret.text)
+                _LOGGER.error("request %s faield %s", url, ret.text)
                 return {}
         except ClientConnectorError as err:
             _LOGGER.error(err)

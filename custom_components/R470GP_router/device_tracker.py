@@ -79,13 +79,6 @@ class TplinkDeviceScanner(DeviceScanner):
         if not results:
             return newinfo
         return results
-    """
-        infomap = {"mac": "mac", "host_name": "hostname", "ip": "ip"}
-        for newkey, oldkey in infomap.items():
-            newinfo[newkey] = results.get(oldkey, "")
-        newinfo["dev_id"] = results.get("mac", "").replace(":", "")
-        return newinfo
-    """
 
     def get_device_name(self, device):
         """Get firmware doesn't save the name of the wireless device."""

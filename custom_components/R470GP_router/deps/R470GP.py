@@ -78,7 +78,6 @@ class R470GPRouter(BaseRouter):
 
     def static_to_onlineinfo(self, static_info:dict) -> dict:
         replace_map = {"ip":"ip", "hostname":"note", "mac":"mac"}
-        #'mac': '68-A4-0E-18-BB-01', 'type': 'wired', 'host_save': 'off', 'ip':'192.168.0.127', 'state': 'online', 'is_cur_host': False, 'hostname':'68A40E18BB01', 'down_limit': '0', 'up_limit': '0', 'interface':'br-lan', 'is_deprecate': False
         new_host_info = {
             "state": "offline",
             "type": "wired",
@@ -140,6 +139,7 @@ class R470GPRouter(BaseRouter):
         return False
 
     async def get_static_macs(self) -> bool:
+        """ get static mac configure """
         if not self.stok:
             return False
 
@@ -151,7 +151,6 @@ class R470GPRouter(BaseRouter):
             "para":{"start":0,"end":199}}
         }
         results = await self._post(url, data, header={})
-        _LOGGER.debug(results)
         results = results.get("dhcpd", {}).get("dhcp_static", {})
         for dhcp_static in results:
             for _, host in dhcp_static.items():
