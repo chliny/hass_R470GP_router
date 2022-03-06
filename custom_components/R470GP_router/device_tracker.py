@@ -46,11 +46,13 @@ class TplinkDeviceScanner(DeviceScanner):
         self._async_see = async_see
         self.client_infos = {}
 
-    async def async_init(self):
+    async def async_init(self) -> bool:
         await self.async_update()
         async_track_time_interval(self._hass,
                                   self.async_update,
                                   self.scan_interval)
+        return True
+
     async def async_update(self, now=None) -> None:
         """Ensure the information from the router is up to date """
         new_client_infos = await self.router.get_host_info()
