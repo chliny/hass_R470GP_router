@@ -57,7 +57,7 @@ class R470GPRouter(BaseRouter):
                 if self.host_is_online(host_info):
                     _LOGGER.debug(host_info)
                     mac = host_info.get("mac", "")
-                    host_infos[mac] = host_info
+                    ret_infos[mac] = host_info
         return ret_infos
 
     def host_is_online(self, host_info:dict) -> bool:

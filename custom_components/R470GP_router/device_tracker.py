@@ -5,7 +5,7 @@ import voluptuous as vol
 
 from datetime import timedelta
 from homeassistant.components.device_tracker import (
-    DOMAIN, PLATFORM_SCHEMA, DeviceScanner, CONF_SCAN_INTERVAL,
+    PLATFORM_SCHEMA, DeviceScanner, CONF_SCAN_INTERVAL,
     SOURCE_TYPE_ROUTER)
 from homeassistant.const import (
     CONF_HOST, CONF_PASSWORD, CONF_USERNAME)
@@ -27,7 +27,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 async def async_setup_scanner(hass, config, async_see, discover_info=None):
-    scanner = TplinkDeviceScanner(hass, config[DOMAIN], async_see)
+    """Set up the device_tracker."""
+    scanner = TplinkDeviceScanner(hass, config, async_see)
     return await scanner.async_init()
 
 class TplinkDeviceScanner(DeviceScanner):
@@ -50,13 +51,14 @@ class TplinkDeviceScanner(DeviceScanner):
         async_track_time_interval(self._hass,
                                   self.async_update,
                                   self.scan_interval)
-    async def async_update(self):
+    async def async_update(self, now=None) -> None:
         """Ensure the information from the router is up to date """
         new_client_infos = await self.router.get_host_info()
         if not new_client_infos:
+            _LOGGER.error("get client infos failed")
             return
         self.client_infos = new_client_infos
-        for mac, client in self.client_infos:
+        for mac, client in self.client_infos.items():
             dev_id = mac.replace("-", "")
             hostname = client.get("hostname", "")
             await self._async_see(mac=mac, dev_id=dev_id, host_name=hostname,
@@ -68,10 +70,8 @@ class TplinkDeviceScanner(DeviceScanner):
         devices = list(self.client_infos.keys())
         return devices
 
-    async def async_get_extra_attributes(self, device:str) -> dict:
+    def get_extra_attributes(self, device:str) -> dict:
         """ other attributes for client """
-        if not self.client_infos:
-            await  self.async_update()
         newinfo = {}
         results = self.client_infos.get(device, {})
         if not results:
