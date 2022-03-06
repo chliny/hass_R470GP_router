@@ -17,13 +17,13 @@ from .deps.R470GP import R470GPRouter
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_SCAN_INTERVAL = 30
+DEFAULT_SCAN_INTERVAL = timedelta(seconds=30)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Required(CONF_PASSWORD): cv.string,
     vol.Required(CONF_USERNAME): cv.string,
-    vol.Optional(CONF_SCAN_INTERVAL): cv.positive_int,
+    vol.Optional(CONF_SCAN_INTERVAL): cv.time_period
 })
 
 async def async_setup_scanner(hass, config, async_see, discover_info=None):
@@ -40,8 +40,7 @@ class TplinkDeviceScanner(DeviceScanner):
         host = config[CONF_HOST]
         username, password = config[CONF_USERNAME], config[CONF_PASSWORD]
         self.router = R470GPRouter(session, host, username, password)
-        interval = config.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
-        self.scan_interval = timedelta(seconds=interval)
+        self.scan_interval = config.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
         self._hass = hass
         self._async_see = async_see
         self.client_infos = {}
