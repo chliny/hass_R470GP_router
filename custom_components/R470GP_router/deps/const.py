@@ -1,2 +1,2 @@
 
-LOGNAME = "R470G_router"
+LOGNAME = "R470GP_router"

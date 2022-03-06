@@ -4,9 +4,7 @@ import logging
 from aiohttp import (
     ClientSession, ClientConnectorError)
 
-from .const import LOGNAME
-
-_LOGGER = logging.getLogger(LOGNAME)
+_LOGGER = logging.getLogger(__name__)
 
 class BaseRouter():
     """router requests"""

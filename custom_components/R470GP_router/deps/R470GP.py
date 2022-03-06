@@ -6,9 +6,8 @@ from aiohttp import ClientSession
 from urllib.parse import unquote
 
 from .base import BaseRouter
-from .const import LOGNAME
 
-_LOGGER = logging.getLogger(LOGNAME)
+_LOGGER = logging.getLogger(__name__)
 
 class R470GPRouter(BaseRouter):
     """ request router infos """

@@ -16,7 +16,7 @@ from homeassistant.helpers.event import async_track_time_interval
 from .deps.const import LOGNAME
 from .deps.R470GP import R470GPRouter
 
-_LOGGER = logging.getLogger(LOGNAME)
+_LOGGER = logging.getLogger(__name__)
 DEFAULT_SCAN_INTERVAL = 30
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
